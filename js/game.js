@@ -6,6 +6,9 @@ const container = document.getElementById("container");
 const questionText = document.getElementById("qestion-text");
 const answerList = document.querySelectorAll(".answer-text");
 const scoreText = document.getElementById("score");
+const nextButton = document.getElementById("next-button");
+const finishButton = document.getElementById("finish-button");
+const questionNumber = document.getElementById("question-number");
 
 const CORRECT_BONUS = 10;
 const URL = `https://opentdb.com/api.php?amount=10&difficulty=easy&type=multiple`;
@@ -54,7 +57,30 @@ const checkAnswer = (index, event) => {
   }
 };
 
+const removeClasses = () => {
+  answerList.forEach((button) => (button.classList = ["answer-text"]));
+};
+
+const nextHandler = () => {
+  if (questionIndex < formatedData.length - 1) {
+    questionIndex++;
+    isAccepted = true;
+    removeClasses();
+    questionNumber.innerText = questionIndex + 1;
+    showQuestion();
+  } else {
+    finishHandler();
+  }
+};
+
+const finishHandler = () => {
+  localStorage.setItem("score", JSON.stringify(score));
+  window.location.assign("./end.html");
+};
+
 window.addEventListener("load", fetchData);
 answerList.forEach((button, index) => {
   button.addEventListener("click", (event) => checkAnswer(index, event));
 });
+nextButton.addEventListener("click", nextHandler);
+finishButton.addEventListener("click", finishHandler);
