@@ -10,8 +10,10 @@ const nextButton = document.getElementById("next-button");
 const finishButton = document.getElementById("finish-button");
 const questionNumber = document.getElementById("question-number");
 
+const level = localStorage.getItem("level") || "medium";
+
 const CORRECT_BONUS = 10;
-const URL = `https://opentdb.com/api.php?amount=10&difficulty=easy&type=multiple`;
+const URL = `https://opentdb.com/api.php?amount=10&difficulty=${level}&type=multiple`;
 let formatedData = null;
 let questionIndex = 0;
 let correctAnswer = null;
@@ -24,7 +26,6 @@ const fetchData = async () => {
     const json = await response.json();
     formatedData = formatData(json.results);
     start();
-    console.log(formatedData);
   } catch {
     loder.style.display = "none";
     error.style.display = "block";
